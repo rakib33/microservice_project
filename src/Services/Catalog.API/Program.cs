@@ -1,4 +1,6 @@
 using Catalog.API.HostingService;
+using Catalog.API.Interfaces.Manager;
+using Catalog.API.Manager;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 //add hosted service here
 builder.Services.AddHostedService<AppHostedService>();
+builder.Services.AddScoped<IProductManager, ProductManager>();
 
 var app = builder.Build();
 
