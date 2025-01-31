@@ -2,13 +2,14 @@
 using Catalog.API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Net;
-
+using CoreApiResponse;
 namespace Catalog.API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CatalogController : ControllerBase
+    public class CatalogController : BaseController
     {
         IProductManager _productManager;
         public CatalogController(IProductManager productManager)
@@ -25,7 +26,7 @@ namespace Catalog.API.Controllers
         public IActionResult GetProducts()
         {
             var products = _productManager.GetAll();
-            return Ok(products);
+            return CustomResult("Data load succesfully", products);
         }
 
     }
