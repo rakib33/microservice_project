@@ -20,10 +20,12 @@ namespace Catalog.API.Controllers
         /// return type of IEnumerable<Product>
         /// always try to apply try catch on controller.
         /// and response type of (int)HttpStatusCode.OK
+        /// add response cache to prevent multiple request within sort time default 30 sec
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Product>),(int)HttpStatusCode.OK)]
+        [ResponseCache(Duration = 30)]
         public IActionResult GetProducts()
         {
             try
