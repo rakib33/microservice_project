@@ -18,6 +18,7 @@ namespace Catalog.API.Controllers
         }
         /// <summary>
         /// return type of IEnumerable<Product>
+        /// always try to apply try catch on controller.
         /// and response type of (int)HttpStatusCode.OK
         /// </summary>
         /// <returns></returns>
@@ -25,8 +26,16 @@ namespace Catalog.API.Controllers
         [ProducesResponseType(typeof(IEnumerable<Product>),(int)HttpStatusCode.OK)]
         public IActionResult GetProducts()
         {
-            var products = _productManager.GetAll();
-            return CustomResult("Data load succesfully", products);
+            try
+            {
+                var products = _productManager.GetAll();
+                return CustomResult("Data load succesfully", products);
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message,HttpStatusCode.BadRequest);
+            }
+
         }
 
     }
