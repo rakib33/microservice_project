@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Net;
 using CoreApiResponse;
+using MongoDB.Bson;
 namespace Catalog.API.Controllers
 {
     [Route("api/[controller]/[action]")]
@@ -38,6 +39,93 @@ namespace Catalog.API.Controllers
                 return CustomResult(ex.Message,HttpStatusCode.BadRequest);
             }
 
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(Product),(int)HttpStatusCode.Created)]
+        public IActionResult CreateProduct([FromBody] Product product)
+        {
+            try
+            {
+                //generate product id
+                product.Id = ObjectId.GenerateNewId().ToString(); // Guid.NewGuid().ToString();
+                bool isSaved = _productManager.Add(product);
+                _productManager.Add(product);
+
+                if(isSaved)
+                {
+                    return CustomResult("Product added successfully",product, HttpStatusCode.Created);
+                }
+                else
+                {
+                    return CustomResult("Product save failed.",product, HttpStatusCode.BadRequest);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(Product), (int)HttpStatusCode.Created)]
+        public IActionResult UpdateProduct([FromBody] Product product)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(product.Id))
+                {
+                    return CustomResult("Product id is required", HttpStatusCode.NotFound);
+                }
+
+                bool isUpdated = _productManager.Update(product.Id, product);
+                _productManager.Add(product);
+
+                if (isUpdated)
+                {
+                    return CustomResult("Product modified successfully", product, HttpStatusCode.OK);
+                }
+                else
+                {
+                    return CustomResult("Product modified failed.", product, HttpStatusCode.BadRequest);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
+        }
+
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        public IActionResult DeleteProduct(string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    return CustomResult("Data not found.", HttpStatusCode.NotFound);
+                }
+
+                bool isDeleted = _productManager.Delete(id);
+
+                if (isDeleted)
+                {
+                    return CustomResult("Product has been deleted successfully",  HttpStatusCode.OK);
+                }
+                else
+                {
+                    return CustomResult("Product deleted  failed.", HttpStatusCode.BadRequest);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return CustomResult(ex.Message, HttpStatusCode.BadRequest);
+            }
         }
 
     }
