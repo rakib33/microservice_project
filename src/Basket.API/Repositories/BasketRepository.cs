@@ -17,7 +17,7 @@ namespace Basket.API.Repositories
         public async Task<ShoppingCart> GetBasket(string userName)
         {
             var basket = await _radisCache.GetStringAsync(userName);
-            if (string.IsNullOrEmpty(userName))
+            if (string.IsNullOrEmpty(basket))
             {
                 return  null;
             }

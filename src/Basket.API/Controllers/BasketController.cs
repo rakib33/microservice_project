@@ -25,6 +25,10 @@ namespace Basket.API.Controllers
             try
             {
                 var basket = await _basketRepository.GetBasket(userName);
+                if (basket == null)
+                {
+                    return CustomResult("Basket data not found", null, HttpStatusCode.NotFound);
+                }
                 return CustomResult("Basket data load successfully",basket);
             }
             catch (Exception ex)
