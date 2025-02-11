@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option csharp_namespace = "Discount.grpc.Protos";
+
+// Service Name should be CamelCase
+service DiscountProtoService {
+  rpc GetDiscount(GetDiscountRequest) returns (CouponRequest);
+  rpc CreateDiscount(CouponRequest) returns (CouponRequest);
+  rpc UpdateDiscount(CouponRequest) returns (CouponRequest);
+  rpc DeleteDiscount(DeleteDiscountRequest) returns (DeleteDiscountRespone);
+}
+
+//message
+message GetDiscountRequest {
+  string product_id = 1;
+}
+
+//returns messsage
+message CouponRequest {
+  int32 id =1;
+  string product_id = 2;
+  string product_name = 3;
+  float description = 4;
+  int32 amount = 5;
+}
+
+message DeleteDiscountRequest {
+  string product_id = 1;
+}
+
+message DeleteDiscountRespone{
+	  bool success = 1;
+}
