@@ -45,6 +45,8 @@ namespace Basket.API.Controllers
         {
             try
             {
+                //TODO: Communicate Discount.grpc
+                //Calculate latest prices of product into shopping cart
                 return CustomResult("Basket modified successfully", await _basketRepository.UpdateBasket(basket));
             }
             catch (Exception ex)
