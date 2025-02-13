@@ -1,9 +1,11 @@
+using Discount.grpc.Mapping;
 using Discount.grpc.Repository;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 builder.Services.AddGrpc();
 

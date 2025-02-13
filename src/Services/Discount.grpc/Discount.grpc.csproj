@@ -7,13 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\discount.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="Npgsql" Version="8.0.6" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\Discount.API\Discount.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\discount.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>
