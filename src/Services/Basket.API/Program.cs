@@ -16,9 +16,6 @@ builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
     (o => o.Address = new Uri(builder.Configuration.GetValue<string>("GrpcSettings:DiscoutGrpcUrl")));
 
 builder.Services.AddScoped<DiscountGrpcService>();
-
-//builder.Services.AddAutoMapper(typeof(MappingProfile));
-
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 builder.Services.AddControllers();
