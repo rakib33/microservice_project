@@ -21,14 +21,31 @@ namespace Discount.grpc.Services
 
         public override async Task<CouponRequest> GetDiscount(GetDiscountRequest request, ServerCallContext context)
         {
-            var coupon = await _couponRepository.GetDiscount(request.ProductId);
-            if (coupon == null)
+            try
             {
-                throw new RpcException(new Status(StatusCode.NotFound, "Discount not found."));
+                var coupon = await _couponRepository.GetDiscount(request.ProductId);
+                if (coupon == null)
+                {
+                    throw new RpcException(new Status(StatusCode.NotFound, "Discount not found."));
+                }
+                _logger.LogInformation("Discount is retrived for ProductName :{productName},Amount : {amount}", coupon.ProductName, coupon.Amount);
+                //return new CouponRequest { ProductId = coupon.ProductId, ProductName = coupon.ProductName, Description = coupon.Description, Amount = coupon.Amount };
+               CouponRequest couponRequest = new CouponRequest
+                {
+                    Id = coupon.Id,
+                    ProductId = coupon.ProductId,
+                    ProductName = coupon.ProductName,
+                    Description = coupon.Description,
+                    Amount = coupon.Amount
+                };
+
+                return _mapper.Map<CouponRequest>(coupon);
             }
-            _logger.LogInformation("Discount is retrived for ProductName :{productName},Amount : {amount}", coupon.ProductName, coupon.Amount);
-            //return new CouponRequest { ProductId = coupon.ProductId, ProductName = coupon.ProductName, Description = coupon.Description, Amount = coupon.Amount };
-            return _mapper.Map<CouponRequest>(coupon);
+            catch(Exception ex)
+            {
+                _logger.LogError("Error in GetDiscount : {Error}", ex.Message);
+                throw new RpcException(new Status(StatusCode.Internal, "Error in GetDiscount"));
+            }
         }
         public override async Task<CouponRequest> CreateDiscount(CouponRequest request, ServerCallContext context)
         {

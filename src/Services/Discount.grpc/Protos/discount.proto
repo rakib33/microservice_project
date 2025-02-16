@@ -20,7 +20,7 @@ message CouponRequest {
   int32 id =1;
   string product_id = 2;
   string product_name = 3;
-  float description = 4;
+  string description = 4;
   int32 amount = 5;
 }
 
