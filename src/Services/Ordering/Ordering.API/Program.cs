@@ -1,3 +1,4 @@
+using MassTransit;
 using Ordering.Application;
 using Ordering.Infrastructure;
 
@@ -13,6 +14,17 @@ builder.Services.AddSwaggerGen();
 // Register application services
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+//RabbitMQ Configuration , cfg = configuration
+builder.Services.AddMassTransit(x =>
+{
+    x.UsingRabbitMq((context, cfg) =>
+    {
+         cfg.Host(builder.Configuration["EventBusSettings:RabbitMQHostAddress"]);
+    });
+});
+
+
 
 var app = builder.Build();
 
